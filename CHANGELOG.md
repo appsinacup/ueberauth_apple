@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.7.0 (2026-07-01)
+
+* **Breaking**: Require Elixir `v1.17`.
+* **Breaking**: Require `httpoison ~> 3.0` so downstream apps use patched Hackney 4.x.
+* **Fix**: Remove direct dev dependency on `earmark`.
+* **Fix**: Remove test-only mocking dependency.
+
 ### v0.6.1 (2023-06-21)
 
 * **Fix**: Avoid errors when email key is not present in token payload.

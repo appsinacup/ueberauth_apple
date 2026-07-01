@@ -56,7 +56,9 @@ defmodule Ueberauth.Strategy.Apple.OAuth do
   end
 
   def get_access_token(params \\ [], opts \\ []) do
-    case opts |> client() |> OAuth2.Client.get_token(params) do
+    {get_access_token, opts} = Keyword.pop(opts, :get_access_token, &OAuth2.Client.get_token/2)
+
+    case opts |> client() |> get_access_token.(params) do
       {:ok, %{token: token}} ->
         {:ok, token}
 

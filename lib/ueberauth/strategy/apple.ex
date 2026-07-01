@@ -220,6 +220,13 @@ defmodule Ueberauth.Strategy.Apple do
     base_options = [redirect_uri: callback_url(conn)]
     request_options = conn.private[:ueberauth_request_options].options
 
+    base_options =
+      if get_access_token = request_options[:get_access_token] do
+        Keyword.put(base_options, :get_access_token, get_access_token)
+      else
+        base_options
+      end
+
     case {request_options[:client_id], request_options[:client_secret]} do
       {nil, _} -> base_options
       {_, nil} -> base_options

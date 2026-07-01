@@ -49,7 +49,7 @@ For detailed instructions, see [Getting Started](guides/getting-started.md).
     [
       # ...
       {:ueberauth, "~> 0.10"},
-      {:ueberauth_apple, "~> 0.6.1"}
+      {:ueberauth_apple, "~> 0.7.0"}
     ]
   end
   ```

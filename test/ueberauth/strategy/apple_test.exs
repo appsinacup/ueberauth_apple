@@ -1,31 +1,8 @@
 defmodule Ueberauth.Strategy.AppleTest do
   use ExUnit.Case, async: false
   use Plug.Test
-  import Mock
 
   alias Ueberauth.Strategy.Apple
-
-  setup_with_mocks([
-    {OAuth2.Client, [:passthrough],
-     [
-       get_token: fn _client, _params ->
-         {:ok,
-          %OAuth2.Client{
-            token: %OAuth2.AccessToken{
-              access_token: "access-abc123",
-              expires_at: 1_662_751_328,
-              other_params: %{
-                "id_token" => "token-abc123"
-              },
-              refresh_token: "refresh-abc123",
-              token_type: "Bearer"
-            }
-          }}
-       end
-     ]}
-  ]) do
-    %{}
-  end
 
   describe "handle_request!/1" do
     setup do
@@ -157,7 +134,8 @@ defmodule Ueberauth.Strategy.AppleTest do
             callback_url: "https://my-app.example.com/auth/apple/callback",
             default_scope: "name email",
             callback_methods: ["POST"],
-            public_keys: {UeberauthApple.Keys, :public_keys, []}
+            public_keys: {UeberauthApple.Keys, :public_keys, []},
+            get_access_token: &__MODULE__.get_access_token/2
           ],
           request_path: "/auth/apple",
           request_port: nil,
@@ -261,5 +239,20 @@ defmodule Ueberauth.Strategy.AppleTest do
       assert %Ueberauth.Auth.Info{email: "email-abc123@privaterelay.appleid.com"} =
                Apple.info(conn)
     end
+  end
+
+  def get_access_token(_client, _params) do
+    {:ok,
+     %OAuth2.Client{
+       token: %OAuth2.AccessToken{
+         access_token: "access-abc123",
+         expires_at: 1_662_751_328,
+         other_params: %{
+           "id_token" => "token-abc123"
+         },
+         refresh_token: "refresh-abc123",
+         token_type: "Bearer"
+       }
+     }}
   end
 end
